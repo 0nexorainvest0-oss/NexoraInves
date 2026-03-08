@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nexora Invest | التعدين السحابي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #FCD535;
+            --primary-dark: #E5BE00;
+            --bg-body: #FAFAFA;
+            --bg-card: #FFFFFF;
+            --text-main: #1E2329;
+            --text-sec: #707A8A;
+            --danger: #F6465D;
+            --success: #0ECB81;
+            --warning: #FFA000;
+            --border: #EAECEF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #FDC830 0%, #F37335 100%);
+            --gradient-3: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --gradient-4: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+            --gradient-5: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0B0E11;
+            --bg-card: #1E2329;
+            --text-main: #EAECEF;
+            --text-sec: #848E9C;
+            --border: #2B3139;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            padding-bottom: 20px; 
+            overflow-x: hidden; 
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+            user-select: none; 
+            -webkit-user-select: none;
+        }        .header {
+            display: flex; justify-content: center; align-items: center;
+            padding: 15px 20px; background: var(--bg-card);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        .header-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .header-title i { color: var(--primary); }
+        .header-actions { display: flex; gap: 15px; }
+        .header-actions i { font-size: 20px; color: var(--text-sec); cursor: pointer; transition: 0.2s; position: relative; }
+        .header-actions i:hover { color: var(--primary); }
+        .header-actions i:active { transform: scale(0.95); }
+        .badge {
+            position: absolute; top: -5px; left: -5px;
+            background: var(--danger); color: white;
+            font-size: 9px; padding: 2px 6px; border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .mining-summary {
+            margin: 15px; padding: 20px;
+            background: var(--gradient-2);
+            border-radius: 20px; color: #000;
+            box-shadow: var(--shadow);
+        }
+        .summary-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;
+        }
+        .summary-item { text-align: center; }
+        .summary-value { font-size: 20px; font-weight: 900; display: block; }
+        .summary-label { font-size: 11px; opacity: 0.9; }
+
+        .section-title {
+            padding: 20px 20px 10px; font-weight: 800; font-size: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-title i { color: var(--primary); }
+
+        .plans-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px; padding: 0 15px;
+        }
+        .plan-card {
+            background: var(--bg-card); border-radius: 20px; padding: 25px;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+            border: 2px solid transparent; transition: 0.3s;
+            cursor: pointer;
+        }
+        .plan-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .plan-card:active { transform: scale(0.99); }        .plan-card.popular { border-color: var(--primary); }
+        .plan-card.popular::before {
+            content: "الأكثر طلباً"; position: absolute; top: 15px; left: -35px;
+            background: var(--primary); color: #000; padding: 5px 40px;
+            font-size: 11px; font-weight: 700; transform: rotate(-45deg);
+            pointer-events: none;
+        }
+        
+        .plan-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+        .plan-name { font-size: 20px; font-weight: 800; margin-bottom: 5px; }
+        .plan-icon { 
+            width: 60px; height: 60px; margin: 0 auto 15px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: white;
+        }
+        .plan-icon.starter { background: var(--gradient-3); }
+        .plan-icon.advanced { background: var(--gradient-1); }
+        .plan-icon.pro { background: var(--gradient-2); }
+        .plan-icon.expert { background: var(--gradient-4); }
+        .plan-icon.elite { background: var(--gradient-5); }
+        
+        .plan-price { font-size: 28px; font-weight: 900; color: var(--primary); }
+        .plan-price span { font-size: 14px; color: var(--text-sec); font-weight: 400; }
+        
+        .plan-features { list-style: none; margin: 20px 0; }
+        .plan-features li {
+            padding: 10px 0; border-bottom: 1px dashed var(--border);
+            display: flex; align-items: center; gap: 10px; font-size: 14px;
+        }
+        .plan-features li i { color: var(--success); width: 20px; }
+        .plan-features li.disabled { color: var(--text-sec); opacity: 0.6; }
+        .plan-features li.disabled i { color: var(--text-sec); }
+        
+        .btn-plan {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            position: relative; 
+            z-index: 10;
+            touch-action: manipulation;
+        }
+        .btn-plan.primary { background: var(--primary); color: #000; }
+        .btn-plan.primary:hover { background: var(--primary-dark); }
+        .btn-plan.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-plan:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-plan:active { transform: scale(0.98); }
+        
+        .plan-status {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;            margin-bottom: 10px;
+        }
+        .plan-status.active { background: rgba(14,203,129,0.15); color: var(--success); }
+        .plan-status.locked { background: rgba(112,122,138,0.15); color: var(--text-sec); }
+        .plan-status.available { background: rgba(252,213,53,0.15); color: var(--primary); }
+        
+        .plan-end-date {
+            font-size: 11px; color: var(--text-sec); margin-top: 8px;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        .active-mining-container {
+            margin: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .active-mining-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-right: 4px solid var(--primary);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mining-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .mining-status { 
+            display: flex; align-items: center; gap: 8px; 
+            padding: 6px 15px; background: rgba(14,203,129,0.15);
+            color: var(--success); border-radius: 20px; font-size: 12px; font-weight: 700;
+        }
+        .mining-status .dot { 
+            width: 8px; height: 8px; background: var(--success); 
+            border-radius: 50%; animation: pulse 1s infinite; 
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .mining-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-box { 
+            background: #F9F9F9; padding: 15px; border-radius: 14px; 
+            text-align: center; 
+        }
+        [data-theme="dark"] .stat-box { background: #2B3139; }
+        .stat-value { font-size: 22px; font-weight: 800; color: var(--primary); display: block; }        .stat-label { font-size: 12px; color: var(--text-sec); margin-top: 5px; }
+
+        .progress-container { margin: 20px 0; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+        .progress-bar { 
+            height: 10px; background: #E0E0E0; border-radius: 10px; overflow: hidden; 
+        }
+        [data-theme="dark"] .progress-bar { background: #3A3F47; }
+        .progress-fill { 
+            height: 100%; background: var(--gradient-2); border-radius: 10px; 
+            width: 65%; transition: width 0.5s ease; position: relative;
+        }
+        .progress-fill::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+        .next-payout {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 15px; border-radius: 14px; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .payout-info span { display: block; }
+        .payout-amount { font-size: 20px; font-weight: 900; }
+        .payout-time { font-size: 12px; opacity: 0.9; }
+        .payout-countdown { 
+            font-size: 18px; font-weight: 800; 
+            background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 10px;
+            font-family: monospace;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .calculator-card {
+            margin: 15px; background: var(--bg-card);
+            border-radius: 20px; padding: 20px; box-shadow: var(--shadow);
+            border-right: 4px solid var(--gradient-2);
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .calc-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }        .calc-title { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .calc-title i { color: var(--primary); }
+        
+        .calc-input-group { margin-bottom: 20px; }
+        .calc-input-group label { 
+            display: block; margin-bottom: 8px; font-size: 14px; 
+            color: var(--text-sec); font-weight: 600;
+        }
+        .calc-input {
+            width: 100%; padding: 14px; border: 2px solid var(--border);
+            border-radius: 12px; font-size: 16px; background: var(--bg-body);
+            color: var(--text-main); outline: none; transition: 0.2s;
+        }
+        .calc-input:focus { border-color: var(--primary); }
+        
+        .calc-slider { width: 100%; margin: 10px 0; accent-color: var(--primary); cursor: pointer; }
+        .calc-slider-values { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sec); }
+        
+        .calc-results {
+            background: #F9F9F9; padding: 20px; border-radius: 16px;
+            margin-top: 20px;
+        }
+        [data-theme="dark"] .calc-results { background: #2B3139; }
+        .calc-row {
+            display: flex; justify-content: space-between; padding: 12px 0;
+            border-bottom: 1px dashed var(--border); font-size: 14px;
+        }
+        .calc-row:last-child { border-bottom: none; }
+        .calc-row.highlight { font-weight: 800; font-size: 18px; color: var(--primary); }
+        .calc-row.highlight span { color: var(--success); }
+
+        .total-earnings-summary {
+            margin: 15px; padding: 20px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary);
+        }
+        .total-earnings-title {
+            font-weight: 800; font-size: 16px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .total-earnings-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+        }
+        .total-earnings-item {
+            text-align: center; padding: 15px;
+            background: rgba(252,213,53,0.1);
+            border-radius: 12px;
+        }        .total-earnings-value {
+            font-size: 24px; font-weight: 900; color: var(--primary);
+            display: block; margin: 5px 0;
+        }
+        .total-earnings-label {
+            font-size: 12px; color: var(--text-sec);
+        }
+
+        .tabs {
+            display: flex; background: var(--bg-card);
+            border-radius: 16px; padding: 5px; margin: 15px;
+            box-shadow: var(--shadow);
+        }
+        .tab {
+            flex: 1; padding: 12px; text-align: center;
+            border-radius: 12px; font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; color: var(--text-sec);
+            z-index: 5;
+            touch-action: manipulation;
+        }
+        .tab:active { transform: scale(0.98); }
+        .tab.active {
+            background: var(--primary); color: #000;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .deposit-section {
+            margin: 15px; background: var(--bg-card);
+            border-radius: 20px; padding: 20px; box-shadow: var(--shadow);
+        }
+        .wallet-address {
+            background: #F5F5F5; padding: 15px; border-radius: 12px;
+            margin: 15px 0; font-family: monospace; font-size: 12px;
+            word-break: break-all; display: flex; justify-content: space-between; align-items: center;
+        }
+        [data-theme="dark"] .wallet-address { background: #2B3139; }
+        .copy-btn {
+            background: var(--primary); border: none; padding: 8px 16px;
+            border-radius: 8px; font-size: 11px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 5px;
+            white-space: nowrap;
+            touch-action: manipulation;
+        }
+        .copy-btn:active { transform: scale(0.98); }
+        .copy-btn:hover { background: var(--primary-dark); }
+        
+        .qr-placeholder {
+            width: 150px; height: 150px; margin: 15px auto;            background: #F5F5F5; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 10px;
+        }
+        [data-theme="dark"] .qr-placeholder { background: #2B3139; }
+        .qr-placeholder i { font-size: 40px; color: var(--primary); }
+        .qr-placeholder span { font-size: 11px; color: var(--text-sec); }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .upload-btn {
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            background-color: rgba(252, 213, 53, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            touch-action: manipulation;
+        }
+        .upload-btn:active { transform: scale(0.98); }
+        .upload-btn:hover {
+            background-color: rgba(252, 213, 53, 0.2);
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-preview {
+            max-width: 100%; max-height: 200px; border-radius: 12px;
+            margin-top: 10px; display: none;            box-shadow: var(--shadow);
+        }
+
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+        }
+        .status-badge.pending { background: rgba(255,160,0,0.15); color: var(--warning); }
+        .status-badge.verified { background: rgba(14,203,129,0.15); color: var(--success); }
+        .status-badge.rejected { background: rgba(246,70,93,0.15); color: var(--danger); }
+        .status-badge.processing { background: rgba(102, 126, 234, 0.15); color: #667eea; animation: pulse 1s infinite; }
+
+        .withdraw-section {
+            margin: 15px; background: var(--bg-card);
+            border-radius: 20px; padding: 20px; box-shadow: var(--shadow);
+        }
+        .withdraw-limits {
+            display: flex; justify-content: space-between;
+            padding: 12px; background: rgba(252,213,53,0.1);
+            border-radius: 12px; margin: 15px 0; font-size: 12px;
+        }
+        .withdraw-limits span { color: var(--text-sec); }
+        .withdraw-limits strong { color: var(--primary); }
+
+        .transactions-section { margin: 15px; }
+        .transaction-card {
+            background: var(--bg-card); border-radius: 16px;
+            padding: 15px; margin-bottom: 10px; box-shadow: var(--shadow);
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .transaction-card:active { transform: scale(0.99); }
+        .transaction-info { display: flex; align-items: center; gap: 12px; }
+        .transaction-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: white;
+        }
+        .transaction-icon.deposit { background: var(--gradient-3); }
+        .transaction-icon.withdraw { background: var(--gradient-1); }
+        .transaction-icon.mining { background: var(--gradient-2); }
+        
+        .transaction-details h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+        .transaction-details p { font-size: 11px; color: var(--text-sec); }
+        .transaction-amount { text-align: left; }
+        .transaction-amount .amount { font-size: 16px; font-weight: 800; display: block; }
+        .transaction-amount .amount.positive { color: var(--success); }
+        .transaction-amount .amount.negative { color: var(--danger); }
+        .transaction-amount .status { font-size: 10px; color: var(--text-sec); }
+        .faq-section { margin: 15px; }
+        .faq-item {
+            background: var(--bg-card); border-radius: 16px;
+            margin-bottom: 10px; overflow: hidden; box-shadow: var(--shadow);
+        }
+        .faq-question {
+            padding: 18px 20px; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; font-weight: 700; font-size: 15px;
+            touch-action: manipulation;
+        }
+        .faq-question:active { background: rgba(0,0,0,0.05); }
+        .faq-question i { transition: 0.3s; color: var(--primary); }
+        .faq-question.active i { transform: rotate(180deg); }
+        .faq-answer {
+            padding: 0 20px; max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 14px; color: var(--text-sec);
+        }
+        .faq-answer.show { padding: 0 20px 20px; max-height: 500px; }
+
+        .toast {
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+            background: var(--success); color: white;
+            padding: 12px 25px; border-radius: 12px;
+            font-size: 14px; font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: 0.3s; display: flex; align-items: center; gap: 10px;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; visibility: visible; top: 90px; }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); color: #000; }
+
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: flex;
+            align-items: center; justify-content: center;
+            z-index: 200; opacity: 0; visibility: hidden;
+            transition: 0.3s; padding: 20px;
+        }
+        .modal.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--bg-card); border-radius: 20px;
+            padding: 25px; width: 100%; max-width: 400px;
+            box-shadow: var(--shadow);
+            animation: modalSlide 0.3s ease;
+        }
+        @keyframes modalSlide {            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-header h3 { font-size: 18px; font-weight: 800; }
+        .modal-close { background: none; border: none; font-size: 24px; color: var(--text-sec); cursor: pointer; }
+        .modal-close:hover { color: var(--danger); }
+        .modal-body { font-size: 14px; color: var(--text-sec); line-height: 1.8; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-actions .btn-plan { flex: 1; }
+
+        .empty-state {
+            text-align: center; padding: 40px 20px; color: var(--text-sec);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 15px; opacity: 0.5; }
+        .empty-state p { font-size: 14px; }
+
+        .remove-plan-btn {
+            background: none; border: none; color: var(--danger);
+            cursor: pointer; font-size: 14px; padding: 5px 10px;
+            display: flex; align-items: center; gap: 5px;
+            transition: 0.2s;
+            touch-action: manipulation;
+        }
+        .remove-plan-btn:active { transform: scale(0.9); }
+        .remove-plan-btn:hover { background: rgba(246,70,93,0.1); border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-title">
+            <i class="fas fa-cloud"></i>
+            Nexora Invest
+        </div>
+    </header>
+
+    <!-- قسم التعدين في الأعلى -->
+    <div class="mining-summary">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;">💰 رصيد التعدين</span>
+            <span style="background:rgba(0,0,0,0.1);padding:4px 12px;border-radius:20px;font-size:12px;">محدث الآن</span>
+        </div>
+        <div style="font-size:32px;font-weight:900;margin:10px 0;" id="totalBalance">$1000.00</div>
+        <div class="summary-grid">
+            <div class="summary-item">                <span class="summary-value" id="hashRate">0 TH/s</span>
+                <span class="summary-label">القوة التعدينية</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-value" id="dailyEarn">$0.00</span>
+                <span class="summary-label">ربح يومي</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-value" id="activeMiners">0</span>
+                <span class="summary-label">أجهزة نشطة</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="total-earnings-summary" id="totalEarningsSection" style="display:none;">
+        <div class="total-earnings-title">
+            <i class="fas fa-chart-pie"></i>
+            ملخص أرباح جميع الباقات
+        </div>
+        <div class="total-earnings-grid">
+            <div class="total-earnings-item">
+                <span class="total-earnings-label">إجمالي الربح اليومي</span>
+                <span class="total-earnings-value" id="totalDailyEarn">$0.00</span>
+            </div>
+            <div class="total-earnings-item">
+                <span class="total-earnings-label">إجمالي الربح الشهري</span>
+                <span class="total-earnings-value" id="totalMonthlyEarn">$0.00</span>
+            </div>
+            <div class="total-earnings-item">
+                <span class="total-earnings-label">عدد الباقات النشطة</span>
+                <span class="total-earnings-value" id="totalActivePlans">0</span>
+            </div>
+            <div class="total-earnings-item">
+                <span class="total-earnings-label">إجمالي القوة التعدينية</span>
+                <span class="total-earnings-value" id="totalHashRate">0 TH/s</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title"><i class="fas fa-bolt"></i> الباقات النشطة</div>
+    <div class="active-mining-container" id="activeMiningContainer"></div>
+
+    <div class="section-title"><i class="fas fa-gem"></i> اختر باقتك</div>
+    <div class="plans-container">
+        
+        <div class="plan-card" data-plan="starter">
+            <div class="plan-header">
+                <div class="plan-icon starter"><i class="fas fa-rocket"></i></div>
+                <div class="plan-name">المبتدئ</div>
+                <div class="plan-price">$100 <span>/ لمرة واحدة</span></div>                <div class="plan-status available" id="status-starter">
+                    <i class="fas fa-check-circle"></i> متاح للاشتراك
+                </div>
+            </div>
+            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> قوة تعدين: 2 TH/s</li>
+                <li><i class="fas fa-check"></i> ربح يومي: $5.00</li>
+                <li><i class="fas fa-check"></i> مدة العقد: 3 أشهر</li>
+                <li><i class="fas fa-check"></i> سحب فوري</li>
+            </ul>
+            <div class="plan-end-date" id="endDate-starter" style="display:none;">
+                <i class="fas fa-calendar"></i> ينتهي في: <span></span>
+            </div>
+            <button class="btn-plan outline" id="btn-starter">
+                <i class="fas fa-play"></i> ابدأ الآن
+            </button>
+        </div>
+
+        <div class="plan-card" data-plan="advanced">
+            <div class="plan-header">
+                <div class="plan-icon advanced"><i class="fas fa-shield-alt"></i></div>
+                <div class="plan-name">المتقدم</div>
+                <div class="plan-price">$300 <span>/ لمرة واحدة</span></div>
+                <div class="plan-status available" id="status-advanced">
+                    <i class="fas fa-check-circle"></i> متاح للاشتراك
+                </div>
+            </div>
+            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> قوة تعدين: 6 TH/s</li>
+                <li><i class="fas fa-check"></i> ربح يومي: $15.00</li>
+                <li><i class="fas fa-check"></i> مدة العقد: 4 أشهر</li>
+                <li><i class="fas fa-check"></i> سحب فوري</li>
+            </ul>
+            <div class="plan-end-date" id="endDate-advanced" style="display:none;">
+                <i class="fas fa-calendar"></i> ينتهي في: <span></span>
+            </div>
+            <button class="btn-plan outline" id="btn-advanced">
+                <i class="fas fa-play"></i> ابدأ الآن
+            </button>
+        </div>
+
+        <div class="plan-card popular" data-plan="pro">
+            <div class="plan-header">
+                <div class="plan-icon pro"><i class="fas fa-crown"></i></div>
+                <div class="plan-name">المحترف</div>
+                <div class="plan-price">$500 <span>/ لمرة واحدة</span></div>
+                <div class="plan-status available" id="status-pro">
+                    <i class="fas fa-check-circle"></i> متاح للاشتراك
+                </div>
+            </div>            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> قوة تعدين: 12 TH/s</li>
+                <li><i class="fas fa-check"></i> ربح يومي: $41.00</li>
+                <li><i class="fas fa-check"></i> مدة العقد: 5 أشهر</li>
+                <li><i class="fas fa-check"></i> سحب بدون رسوم</li>
+                <li><i class="fas fa-check"></i> دعم فني 24/7</li>
+            </ul>
+            <div class="plan-end-date" id="endDate-pro" style="display:none;">
+                <i class="fas fa-calendar"></i> ينتهي في: <span></span>
+            </div>
+            <button class="btn-plan primary" id="btn-pro">
+                <i class="fas fa-bolt"></i> الأكثر قيمة
+            </button>
+        </div>
+
+        <div class="plan-card" data-plan="expert">
+            <div class="plan-header">
+                <div class="plan-icon expert"><i class="fas fa-user-tie"></i></div>
+                <div class="plan-name">الخبراء</div>
+                <div class="plan-price">$750 <span>/ لمرة واحدة</span></div>
+                <div class="plan-status available" id="status-expert">
+                    <i class="fas fa-check-circle"></i> متاح للاشتراك
+                </div>
+            </div>
+            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> قوة تعدين: 18 TH/s</li>
+                <li><i class="fas fa-check"></i> ربح يومي: $50.00</li>
+                <li><i class="fas fa-check"></i> مدة العقد: 6 أشهر</li>
+                <li><i class="fas fa-check"></i> سحب بدون رسوم</li>
+                <li><i class="fas fa-check"></i> مدير حساب خاص</li>
+            </ul>
+            <div class="plan-end-date" id="endDate-expert" style="display:none;">
+                <i class="fas fa-calendar"></i> ينتهي في: <span></span>
+            </div>
+            <button class="btn-plan outline" id="btn-expert">
+                <i class="fas fa-star"></i> استثمار قوي
+            </button>
+        </div>
+
+        <div class="plan-card" data-plan="elite">
+            <div class="plan-header">
+                <div class="plan-icon elite"><i class="fas fa-diamond"></i></div>
+                <div class="plan-name">النخبة</div>
+                <div class="plan-price">$1000 <span>/ لمرة واحدة</span></div>
+                <div class="plan-status available" id="status-elite">
+                    <i class="fas fa-check-circle"></i> متاح للاشتراك
+                </div>
+            </div>
+            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> قوة تعدين: 25 TH/s</li>                <li><i class="fas fa-check"></i> ربح يومي: $66.00</li>
+                <li><i class="fas fa-check"></i> مدة العقد: 8 أشهر</li>
+                <li><i class="fas fa-check"></i> أولوية سحب قصوى</li>
+                <li><i class="fas fa-check"></i> جميع المميزات</li>
+            </ul>
+            <div class="plan-end-date" id="endDate-elite" style="display:none;">
+                <i class="fas fa-calendar"></i> ينتهي في: <span></span>
+            </div>
+            <button class="btn-plan outline" id="btn-elite">
+                <i class="fas fa-king"></i> أقصى ربح
+            </button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="deposit">💳 إيداع</div>
+        <div class="tab" data-tab="withdraw">📤 سحب</div>
+        <div class="tab" data-tab="history">📋 السجل</div>
+    </div>
+
+    <div id="tab-deposit" class="tab-content active">
+        <div class="deposit-section">
+            <h4 style="font-weight:700;margin-bottom:10px;">📥 خطوات الإيداع</h4>
+            <p style="font-size:13px;color:var(--text-sec);margin-bottom:20px;">
+                1️⃣ أرسل المبلغ إلى العنوان أدناه<br>
+                2️⃣ ارفع صورة إثبات التحويل<br>
+                3️⃣ انتظر التحقق التلقائي (20 ثانية)
+            </p>
+
+            <div class="calc-input-group">
+                <label>اختر العملة للإيداع</label>
+                <select class="calc-input" id="depositCurrency">
+                    <option value="usdt">USDT (TRC20)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                </select>
+            </div>
+            <label style="font-size:14px;color:var(--text-sec);font-weight:600;">عنوان المحفظة للإيداع:</label>
+            <div class="wallet-address">
+                <span id="walletAddress">TXYZabc123def456ghi789jkl012mno345pqr678</span>
+                <button class="copy-btn" id="copyBtn">
+                    <i class="fas fa-copy"></i> نسخ
+                </button>
+            </div>
+            <div class="qr-placeholder">
+                <i class="fas fa-qrcode"></i>
+                <span>امسح الكود للإيداع السريع</span>
+            </div>
+
+            <label style="font-size:14px;color:var(--text-sec);font-weight:600; display:block; margin-top:15px;">📸 رفع إثبات التحويل:</label>            <div class="upload-btn-wrapper">
+                <button class="upload-btn" id="uploadBtn">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 24px;"></i>
+                    <span>اضغط هنا لاختيار صورة الإثبات</span>
+                    <span style="font-size:11px; opacity:0.8;">PNG, JPG حتى 5MB</span>
+                </button>
+                <input type="file" id="proofInput" accept="image/*">
+            </div>
+            <img id="imagePreview" class="upload-preview" src="" alt="معاينة">
+
+            <div class="deposit-form" style="margin-top:15px;">
+                <input type="number" class="calc-input" id="depositAmount" placeholder="💵 مبلغ الإيداع (USD)" min="10">
+            </div>
+
+            <button class="btn-plan primary" id="submitDepositBtn" style="margin-top:20px;">
+                <i class="fas fa-paper-plane"></i> إرسال طلب الإيداع
+            </button>
+
+            <div style="margin-top:20px;padding:15px;background:rgba(252,213,53,0.1);border-radius:12px;">
+                <p style="font-size:12px;color:var(--text-sec);">
+                    <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+                    <strong>ملاحظة:</strong> يتم التحقق من الإيداع تلقائياً خلال 20 ثانية.
+                </p>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-clock"></i> طلبات الإيداع</div>
+        <div id="pendingDeposits"></div>
+    </div>
+
+    <div id="tab-withdraw" class="tab-content">
+        <div class="withdraw-section">
+            <h4 style="font-weight:700;margin-bottom:10px;">📤 سحب الأرباح</h4>
+            <p style="font-size:13px;color:var(--text-sec);margin-bottom:20px;">
+                اسحب أرباحك إلى محفظتك الخارجية بأمان وسرعة 🔐
+            </p>
+            <div class="withdraw-limits">
+                <span>الحد الأدنى: <strong>$10</strong></span>
+                <span>الحد الأقصى: <strong>$10,000</strong></span>
+                <span>الرسوم: <strong>2%</strong></span>
+            </div>
+
+            <div class="calc-input-group">
+                <label>اختر عملة السحب</label>
+                <select class="calc-input" id="withdrawCurrency">
+                    <option value="usdt">USDT (TRC20)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                </select>
+            </div>
+            <div class="calc-input-group">
+                <label>عنوان محفظتك الخارجية</label>
+                <input type="text" class="calc-input" id="withdrawAddress" placeholder="أدخل عنوان المحفظة...">
+            </div>
+
+            <div class="calc-input-group">
+                <label>مبلغ السحب (USD)</label>
+                <input type="number" class="calc-input" id="withdrawAmount" placeholder="أدخل المبلغ..." min="10" max="10000">
+            </div>
+
+            <div class="calc-results">
+                <div class="calc-row"><span>المبلغ المطلوب</span><span id="withdrawRequest">$0.00</span></div>
+                <div class="calc-row"><span>رسوم المعاملة (2%)</span><span id="withdrawFee" style="color:var(--danger);">-$0.00</span></div>
+                <div class="calc-row highlight"><span>سيصلك</span><span id="withdrawNet">$0.00</span></div>
+            </div>
+
+            <button class="btn-plan primary" id="submitWithdrawBtn" style="margin-top:20px;">
+                <i class="fas fa-lock"></i> تأكيد طلب السحب
+            </button>
+
+            <p class="security-note" style="text-align:center;font-size:11px;color:var(--text-sec);margin-top:15px;">
+                <i class="fas fa-shield-alt"></i> جميع عمليات السحب تتطلب التحقق الأمني | المعالجة خلال 24 ساعة
+            </p>
+        </div>
+
+        <div class="section-title"><i class="fas fa-hourglass-half"></i> طلبات السحب</div>
+        <div id="pendingWithdraws"></div>
+    </div>
+
+    <div id="tab-history" class="tab-content">
+        <div class="transactions-section" id="transactionsList"></div>
+    </div>
+
+    <div class="section-title"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</div>
+    <div class="faq-section">
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>كم تستغرق عملية التحقق من الإيداع؟</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                تتم مراجعة طلبات الإيداع تلقائياً خلال 20 ثانية بعد رفع صورة الإثبات.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>ما هي رسوم السحب؟</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>            <div class="faq-answer">
+                رسوم السحب ثابتة عند 2% من المبلغ. الحد الأدنى للسحب $10 والحد الأقصى $10,000 يومياً.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>هل يمكنني الاشتراك في نفس الباقة أكثر من مرة؟</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                لا يمكن الاشتراك في نفس الباقة إلا بعد انتهاء العقد الحالي.
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMsg">تم بنجاح!</span>
+    </div>
+
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">تفاصيل الطلب</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-actions">
+                <button class="btn-plan outline" id="modalCloseBtn">إغلاق</button>
+                <button class="btn-plan primary" id="modalAction" style="display:none;">محاكاة الموافقة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === البيانات الأولية ===
+        let userData = {
+            balance: 1000,
+            hashRate: 0,
+            dailyEarn: 0,
+            activeMiners: 0,
+            activePlans: []
+        };
+
+        const OFFICIAL_WALLETS = {
+            usdt: 'TXYZabc123def456ghi789jkl012mno345pqr678',
+            btc: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+            eth: '0x742d35Cc6634C0532925a3b844Bc9E7595f8fE8'
+        };
+        const PLAN_INFO = {
+            starter: { name: 'المبتدئ', price: 100, hash: 2, daily: 5, months: 3, icon: 'rocket', gradient: 'starter' },
+            advanced: { name: 'المتقدم', price: 300, hash: 6, daily: 15, months: 4, icon: 'shield-alt', gradient: 'advanced' },
+            pro: { name: 'المحترف', price: 500, hash: 12, daily: 41, months: 5, icon: 'crown', gradient: 'pro' },
+            expert: { name: 'الخبراء', price: 750, hash: 18, daily: 50, months: 6, icon: 'user-tie', gradient: 'expert' },
+            elite: { name: 'النخبة', price: 1000, hash: 25, daily: 66, months: 8, icon: 'diamond', gradient: 'elite' }
+        };
+
+        // === متغيرات العد التنازلي ===
+        let countdownIntervals = {};
+
+        // === تهيئة الصفحة ===
+        document.addEventListener('DOMContentLoaded', () => {
+            initEventListeners();
+            loadUserData();
+            checkExpiredContracts();
+            updateDashboard();
+            renderActivePlans();
+            updatePlanButtons();
+            updateWalletAddress();
+            startAllCountdowns();
+            initProgressAnimation();
+            renderPendingDeposits();
+            renderPendingWithdraws();
+            renderTransactions();
+            checkNotifications();
+        });
+
+        // === تهيئة مستمعي الأحداث ===
+        function initEventListeners() {
+            document.getElementById('btn-starter')?.addEventListener('click', () => activatePlan('starter', 100, 2, 5, 3));
+            document.getElementById('btn-advanced')?.addEventListener('click', () => activatePlan('advanced', 300, 6, 15, 4));
+            document.getElementById('btn-pro')?.addEventListener('click', () => activatePlan('pro', 500, 12, 41, 5));
+            document.getElementById('btn-expert')?.addEventListener('click', () => activatePlan('expert', 750, 18, 50, 6));
+            document.getElementById('btn-elite')?.addEventListener('click', () => activatePlan('elite', 1000, 25, 66, 8));
+
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab));
+            });
+
+            document.getElementById('depositCurrency')?.addEventListener('change', updateWalletAddress);
+            document.getElementById('copyBtn')?.addEventListener('click', copyWalletAddress);
+            document.getElementById('uploadBtn')?.addEventListener('click', () => document.getElementById('proofInput')?.click());
+            document.getElementById('proofInput')?.addEventListener('change', (e) => previewImage(e.target));
+            document.getElementById('submitDepositBtn')?.addEventListener('click', submitDeposit);
+            document.getElementById('withdrawAmount')?.addEventListener('input', calcWithdrawFee);
+            document.getElementById('submitWithdrawBtn')?.addEventListener('click', submitWithdraw);
+
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.addEventListener('click', (e) => toggleFaq(e.currentTarget));            });
+
+            document.getElementById('notifBtn')?.addEventListener('click', showNotifications);
+
+            document.getElementById('modalClose')?.addEventListener('click', closeModal);
+            document.getElementById('modalCloseBtn')?.addEventListener('click', closeModal);
+            document.getElementById('modalAction')?.addEventListener('click', simulateApprove);
+            document.getElementById('requestModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'requestModal') closeModal();
+            });
+        }
+
+        // === تحميل/حفظ البيانات ===
+        function loadUserData() {
+            const saved = localStorage.getItem('nexora_mining');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    userData = { ...userData, ...parsed };
+                    if (parsed.miningPlan && !parsed.activePlans) {
+                        userData.activePlans = [parsed.miningPlan];
+                        delete userData.miningPlan;
+                    }
+                } catch(e) { console.error('Error:', e); }
+            }
+        }
+        function saveUserData() {
+            try { localStorage.setItem('nexora_mining', JSON.stringify(userData)); } 
+            catch(e) { console.error('Error:', e); }
+        }
+        function getTransactions() { try { return JSON.parse(localStorage.getItem('nexora_transactions') || '[]'); } catch(e) { return []; } }
+        function saveTransactions(txns) { try { localStorage.setItem('nexora_transactions', JSON.stringify(txns)); } catch(e) { console.error(e); } }
+        function getPendingDeposits() { try { return JSON.parse(localStorage.getItem('nexora_pending_deposits') || '[]'); } catch(e) { return []; } }
+        function savePendingDeposits(deposits) { try { localStorage.setItem('nexora_pending_deposits', JSON.stringify(deposits)); } catch(e) { console.error(e); } }
+        function getPendingWithdraws() { try { return JSON.parse(localStorage.getItem('nexora_pending_withdraws') || '[]'); } catch(e) { return []; } }
+        function savePendingWithdraws(withdraws) { try { localStorage.setItem('nexora_pending_withdraws', JSON.stringify(withdraws)); } catch(e) { console.error(e); } }
+
+        // === التحقق من العقود المنتهية ===
+        function checkExpiredContracts() {
+            const now = Date.now();
+            let hasChanges = false;
+            
+            const activePlans = (userData.activePlans || []).filter(plan => {
+                if (plan.endDate <= now) {
+                    hasChanges = true;
+                    showToast(`⏰ انتهى عقد ${getPlanName(plan.name)}`);
+                    if (countdownIntervals[plan.id]) {
+                        clearInterval(countdownIntervals[plan.id]);
+                        delete countdownIntervals[plan.id];
+                    }                    return false;
+                }
+                return true;
+            });
+            
+            if (hasChanges) {
+                userData.activePlans = activePlans;
+                saveUserData();
+                updateDashboard();
+                renderActivePlans();
+                updatePlanButtons();
+            }
+        }
+
+        // === التحقق من عقد نشط ===
+        function hasActiveContract(planKey) {
+            const now = Date.now();
+            return (userData.activePlans || []).some(p => p.name === planKey && p.endDate > now);
+        }
+
+        // === تحديث أزرار الباقات ===
+        function updatePlanButtons() {
+            Object.keys(PLAN_INFO).forEach(planKey => {
+                const statusEl = document.getElementById(`status-${planKey}`);
+                const btnEl = document.getElementById(`btn-${planKey}`);
+                const endDateEl = document.getElementById(`endDate-${planKey}`);
+                
+                if (!statusEl || !btnEl) return;
+                
+                const activeContract = (userData.activePlans || []).find(p => p.name === planKey && p.endDate > Date.now());
+                
+                if (activeContract) {
+                    statusEl.className = 'plan-status active';
+                    statusEl.innerHTML = '<i class="fas fa-lock"></i> عقد نشط';
+                    btnEl.disabled = true;
+                    btnEl.innerHTML = '<i class="fas fa-hourglass"></i> حتى ' + formatDate(activeContract.endDate);
+                    btnEl.classList.remove('primary');
+                    btnEl.classList.add('outline');
+                    btnEl.style.background = 'var(--text-sec)';
+                    btnEl.style.color = '#fff';
+                    
+                    endDateEl.style.display = 'flex';
+                    endDateEl.querySelector('span').textContent = formatDate(activeContract.endDate);
+                } else {
+                    statusEl.className = 'plan-status available';
+                    statusEl.innerHTML = '<i class="fas fa-check-circle"></i> متاح للاشتراك';
+                    btnEl.disabled = false;
+                    btnEl.classList.remove('primary', 'outline');
+                    if (planKey === 'pro') {
+                        btnEl.classList.add('primary');                        btnEl.innerHTML = '<i class="fas fa-bolt"></i> الأكثر قيمة';
+                    } else {
+                        btnEl.classList.add('outline');
+                        btnEl.innerHTML = '<i class="fas fa-play"></i> ابدأ الآن';
+                    }
+                    btnEl.style.background = '';
+                    btnEl.style.color = '';
+                    endDateEl.style.display = 'none';
+                }
+            });
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ar-EG', { 
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // === تحديث لوحة التحكم ===
+        function updateDashboard() {
+            const activePlans = userData.activePlans || [];
+            const totalHash = activePlans.reduce((sum, p) => sum + p.hash, 0);
+            const totalDaily = activePlans.reduce((sum, p) => p.endDate > Date.now() ? sum + p.daily : sum, 0);
+            const activeCount = activePlans.filter(p => p.endDate > Date.now()).length;
+            
+            document.getElementById('totalBalance').textContent = '$' + userData.balance.toFixed(2);
+            document.getElementById('hashRate').textContent = totalHash.toFixed(1) + ' TH/s';
+            document.getElementById('dailyEarn').textContent = '$' + totalDaily.toFixed(2);
+            document.getElementById('activeMiners').textContent = activeCount;
+            
+            const totalEarningsSection = document.getElementById('totalEarningsSection');
+            if (activeCount > 0) {
+                totalEarningsSection.style.display = 'block';
+                document.getElementById('totalDailyEarn').textContent = '$' + totalDaily.toFixed(2);
+                document.getElementById('totalMonthlyEarn').textContent = '$' + (totalDaily * 30).toFixed(2);
+                document.getElementById('totalActivePlans').textContent = activeCount;
+                document.getElementById('totalHashRate').textContent = totalHash.toFixed(1) + ' TH/s';
+            } else {
+                totalEarningsSection.style.display = 'none';
+            }
+        }
+
+        function getPlanName(key) {
+            const names = {
+                'starter': 'باقة المبتدئ',
+                'advanced': 'باقة المتقدم',
+                'pro': 'باقة المحترف',
+                'expert': 'باقة الخبراء',                'elite': 'باقة النخبة'
+            };
+            return names[key] || 'باقة تعدين';
+        }
+
+        // === تنسيق الوقت ===
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        // === عرض الباقات النشطة ===
+        function renderActivePlans() {
+            const container = document.getElementById('activeMiningContainer');
+            const activePlans = (userData.activePlans || []).filter(p => p.endDate > Date.now());
+            
+            if (activePlans.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-cloud"></i>
+                        <p>لا توجد باقات تعدين نشطة حالياً</p>
+                        <p style="font-size:12px;margin-top:10px;opacity:0.7">اختر باقة من الأسفل للبدء</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = activePlans.map((plan, index) => {
+                const planInfo = PLAN_INFO[plan.name];
+                const now = Date.now();
+                const totalDuration = plan.endDate - plan.startDate;
+                const elapsed = now - plan.startDate;
+                const progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                const remainingDays = Math.ceil((plan.endDate - now) / (1000 * 60 * 60 * 24));
+                
+                const initialTime = '04:23:15';
+                
+                return `
+                <div class="active-mining-card" id="plan-card-${plan.id}">
+                    <div class="mining-header">
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                            <div class="plan-icon ${planInfo.gradient}" style="width:40px;height:40px;font-size:18px;margin:0;">
+                                <i class="fas fa-${planInfo.icon}"></i>
+                            </div>
+                            <div>
+                                <span style="font-weight:700;font-size:16px;">${getPlanName(plan.name)}</span>
+                                <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">
+                                    عقد #${index + 1} • ${planInfo.months} أشهر                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                            <span class="mining-status"><span class="dot"></span> يعمل الآن</span>
+                            <button class="remove-plan-btn" data-plan-id="${plan.id}" title="إزالة الباقة">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mining-stats">
+                        <div class="stat-box">
+                            <span class="stat-value">${plan.hash} TH/s</span>
+                            <span class="stat-label">هاش رايت</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value">$${plan.daily.toFixed(2)}</span>
+                            <span class="stat-label">ربح يومي</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value">$${(plan.daily * 30).toFixed(2)}</span>
+                            <span class="stat-label">ربح شهري</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value">${remainingDays} يوم</span>
+                            <span class="stat-label">الوقت المتبقي</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>تقدم العقد</span>
+                            <span class="progress-percent" id="progress-${plan.id}">${Math.floor(progress)}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill-${plan.id}" style="width:${progress}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="next-payout">
+                        <div class="payout-info">
+                            <span>الدفعة القادمة</span>
+                            <span class="payout-amount">$${plan.daily.toFixed(2)} USD</span>
+                            <span class="payout-time">بعد <span id="countdown-${plan.id}">${initialTime}</span></span>
+                        </div>
+                        <div class="payout-countdown" id="countdown-big-${plan.id}">${initialTime.slice(0,5)}</div>
+                    </div>
+                </div>
+                                <div class="calculator-card" id="calc-card-${plan.id}">
+                    <div class="calc-header">
+                        <div class="calc-title">
+                            <i class="fas fa-calculator"></i>
+                            حاسبة أرباح: ${getPlanName(plan.name)}
+                        </div>
+                        <span style="font-size:12px;color:var(--text-sec);">
+                            <i class="fas fa-coins"></i> $${plan.daily.toFixed(2)}/يوم
+                        </span>
+                    </div>
+                    
+                    <div class="calc-input-group">
+                        <label>فترة الحساب: <span id="duration-${plan.id}">3 أشهر</span></label>
+                        <input type="range" class="calc-slider" id="calc-slider-${plan.id}" 
+                               data-plan-id="${plan.id}" data-daily="${plan.daily}" data-price="${planInfo.price}"
+                               min="1" max="${planInfo.months}" value="3">
+                        <div class="calc-slider-values">
+                            <span>1 شهر</span>
+                            <span>${planInfo.months} أشهر</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-results">
+                        <div class="calc-row"><span>الربح اليومي</span><span id="calc-daily-${plan.id}">$${plan.daily.toFixed(2)}</span></div>
+                        <div class="calc-row"><span>الربح الشهري</span><span id="calc-monthly-${plan.id}">$${(plan.daily * 30).toFixed(2)}</span></div>
+                        <div class="calc-row"><span>إجمالي الربح</span><span id="calc-total-${plan.id}">$0.00</span></div>
+                        <div class="calc-row highlight"><span>صافي الربح</span><span id="calc-net-${plan.id}">+$0.00 <span>(0%)</span></span></div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.calc-slider').forEach(slider => {
+                slider.addEventListener('input', (e) => {
+                    const planId = e.currentTarget.dataset.planId;
+                    const daily = parseFloat(e.currentTarget.dataset.daily);
+                    const price = parseFloat(e.currentTarget.dataset.price);
+                    calculatePlanEarnings(planId, daily, price);
+                });
+            });
+            
+            document.querySelectorAll('.remove-plan-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removePlan(e.currentTarget.dataset.planId);
+                });
+            });
+            
+            activePlans.forEach(plan => {
+                const planInfo = PLAN_INFO[plan.name];                calculatePlanEarnings(plan.id, plan.daily, planInfo.price);
+            });
+        }
+
+        // === بدء جميع العدادات ===
+        function startAllCountdowns() {
+            Object.keys(countdownIntervals).forEach(key => {
+                clearInterval(countdownIntervals[key]);
+                delete countdownIntervals[key];
+            });
+            
+            const activePlans = (userData.activePlans || []).filter(p => p.endDate > Date.now());
+            
+            activePlans.forEach((plan, index) => {
+                const startSeconds = (4 * 3600) + (23 * 60) + 15 + (index * 30);
+                
+                countdownIntervals[plan.id] = {
+                    seconds: startSeconds,
+                    interval: null
+                };
+                
+                countdownIntervals[plan.id].interval = setInterval(() => {
+                    countdownIntervals[plan.id].seconds--;
+                    
+                    if (countdownIntervals[plan.id].seconds < 0) {
+                        countdownIntervals[plan.id].seconds = (4 * 3600) + (23 * 60) + 15;
+                    }
+                    
+                    const timeStr = formatTime(countdownIntervals[plan.id].seconds);
+                    
+                    const el1 = document.getElementById(`countdown-${plan.id}`);
+                    const el2 = document.getElementById(`countdown-big-${plan.id}`);
+                    
+                    if (el1) el1.textContent = timeStr;
+                    if (el2) el2.textContent = timeStr.slice(0, 5);
+                    
+                }, 1000);
+            });
+        }
+
+        // === حاسبة الأرباح ===
+        function calculatePlanEarnings(planId, daily, price) {
+            const slider = document.getElementById(`calc-slider-${planId}`);
+            if (!slider) return;
+            
+            const months = parseInt(slider.value);
+            const durationEl = document.getElementById(`duration-${planId}`);
+            if (durationEl) durationEl.textContent = months + ' شهر' + (months > 1 ? 'ات' : '');
+
+            const monthly = daily * 30;            const total = monthly * months;
+            const roi = ((total / price) * 100).toFixed(1);
+            
+            const els = {
+                daily: document.getElementById(`calc-daily-${planId}`),
+                monthly: document.getElementById(`calc-monthly-${planId}`),
+                total: document.getElementById(`calc-total-${planId}`),
+                net: document.getElementById(`calc-net-${planId}`)
+            };
+            
+            if (els.daily) els.daily.textContent = '$' + daily.toFixed(2);
+            if (els.monthly) els.monthly.textContent = '$' + monthly.toFixed(2);
+            if (els.total) els.total.textContent = '$' + total.toFixed(2);
+            if (els.net) els.net.innerHTML = '+$' + total.toFixed(2) + ' <span>(' + roi + '%)</span>';
+        }
+
+        // === تبويبات المحفظة ===
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            const activeTab = document.querySelector(`.tab[data-tab="${tab}"]`);
+            if (activeTab) activeTab.classList.add('active');
+            
+            const content = document.getElementById('tab-' + tab);
+            if(content) content.classList.add('active');
+        }
+
+        function updateWalletAddress() {
+            const currency = document.getElementById('depositCurrency')?.value || 'usdt';
+            const addrEl = document.getElementById('walletAddress');
+            if (addrEl) addrEl.textContent = OFFICIAL_WALLETS[currency];
+        }
+
+        function copyWalletAddress() {
+            const addr = document.getElementById('walletAddress')?.textContent;
+            if (addr && navigator.clipboard) {
+                navigator.clipboard.writeText(addr).then(() => showToast('📋 تم نسخ العنوان!'));
+            }
+        }
+
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const uploadSpan = document.querySelector('.upload-btn span:first-of-type');
+            
+            if (input?.files?.[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (preview) {
+                        preview.src = e.target.result;                        preview.style.display = 'block';
+                    }
+                    if (uploadSpan) {
+                        uploadSpan.textContent = "✅ تم اختيار: " + input.files[0].name;
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function submitDeposit() {
+            const amountInput = document.getElementById('depositAmount');
+            const currencySelect = document.getElementById('depositCurrency');
+            const proofInput = document.getElementById('proofInput');
+            const btn = document.getElementById('submitDepositBtn');
+            
+            const amount = parseFloat(amountInput?.value);
+            const currency = currencySelect?.value || 'usdt';
+            const proof = proofInput?.files?.[0];
+
+            if (!amount || amount < 10) { showToast('⚠️ الحد الأدنى $10', 'error'); return; }
+            if (!proof) { showToast('⚠️ يرجى اختيار صورة الإثبات', 'error'); return; }
+            if (!btn) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+            btn.style.background = 'var(--text-sec)';
+
+            const deposit = {
+                id: 'DEP-' + Date.now(),
+                amount: amount,
+                currency: currency.toUpperCase(),
+                proof: proof.name,
+                status: 'processing',
+                date: new Date().toLocaleString('ar-EG'),
+                address: OFFICIAL_WALLETS[currency]
+            };
+            const pending = getPendingDeposits();
+            pending.unshift(deposit);
+            savePendingDeposits(pending);
+
+            const txns = getTransactions();
+            txns.unshift({
+                id: deposit.id,
+                type: 'deposit',
+                amount: amount,
+                currency: currency.toUpperCase(),
+                status: 'processing',
+                date: deposit.date,
+                icon: 'deposit'            });
+            saveTransactions(txns);
+
+            showToast('📤 تم استلام الطلب!', 'warning');
+            
+            if (amountInput) amountInput.value = '';
+            if (proofInput) proofInput.value = '';
+            const preview = document.getElementById('imagePreview');
+            if (preview) preview.style.display = 'none';
+            const uploadSpan = document.querySelector('.upload-btn span:first-of-type');
+            if (uploadSpan) uploadSpan.textContent = "اضغط هنا لاختيار صورة الإثبات";
+            
+            renderPendingDeposits();
+            renderTransactions();
+            checkNotifications();
+
+            setTimeout(() => {
+                autoApproveDeposit(deposit.id);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال طلب الإيداع';
+                    btn.style.background = 'var(--primary)';
+                }
+            }, 20000);
+        }
+        
+        function autoApproveDeposit(id) {
+            const pending = getPendingDeposits();
+            const idx = pending.findIndex(d => d.id === id);
+            if (idx !== -1) {
+                pending[idx].status = 'verified';
+                savePendingDeposits(pending);
+                
+                userData.balance += pending[idx].amount;
+                saveUserData();
+                updateDashboard();
+                
+                const txns = getTransactions();
+                const tIdx = txns.findIndex(t => t.id === id);
+                if (tIdx !== -1) {
+                    txns[tIdx].status = 'verified';
+                    saveTransactions(txns);
+                }
+                
+                showToast(`✅ تمت الموافقة! +$${pending[idx].amount}`);
+                renderPendingDeposits();
+                renderTransactions();
+                checkNotifications();
+            }
+        }
+        function renderPendingDeposits() {
+            const container = document.getElementById('pendingDeposits');
+            if (!container) return;
+            
+            const pending = getPendingDeposits().filter(d => d.status === 'pending' || d.status === 'processing');
+            
+            if (pending.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>لا توجد طلبات</p></div>';
+                return;
+            }
+
+            container.innerHTML = pending.map(d => {
+                const statusBadge = d.status === 'processing' 
+                    ? '<span class="status-badge processing"><i class="fas fa-circle-notch fa-spin"></i> جاري التحقق</span>'
+                    : '<span class="status-badge pending">⏳ معلق</span>';
+
+                return `
+                <div class="transaction-card" data-type="deposit" data-id="${d.id}">
+                    <div class="transaction-info">
+                        <div class="transaction-icon deposit"><i class="fas fa-arrow-down"></i></div>
+                        <div class="transaction-details">
+                            <h4>إيداع ${d.currency}</h4>
+                            <p>${d.date}</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <span class="amount positive">+$${d.amount.toFixed(2)}</span>
+                        ${statusBadge}
+                    </div>
+                </div>
+            `}).join('');
+            
+            container.querySelectorAll('.transaction-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    showRequestDetails(e.currentTarget.dataset.type, e.currentTarget.dataset.id);
+                });
+            });
+        }
+
+        // === تفعيل الباقة ===
+        function activatePlan(planKey, price, hash, daily, months) {
+            if (hasActiveContract(planKey)) {
+                const activeContract = (userData.activePlans || []).find(p => p.name === planKey && p.endDate > Date.now());
+                showToast(`⚠️ لديك عقد نشط! ينتهي ${formatDate(activeContract.endDate)}`, 'error');
+                return;
+            }
+            
+            if (userData.balance < price) {
+                showToast('⚠️ رصيدك غير كافي!', 'error');                setTimeout(() => switchTab('deposit'), 2000);
+                return;
+            }
+            
+            const endDate = new Date();
+            endDate.setMonth(endDate.getMonth() + months);
+            
+            const newContract = {
+                id: 'contract_' + planKey + '_' + Date.now(),
+                name: planKey,
+                price: price,
+                hash: hash,
+                daily: daily,
+                months: months,
+                startDate: Date.now(),
+                endDate: endDate.getTime()
+            };
+            
+            if (!userData.activePlans) userData.activePlans = [];
+            userData.activePlans.push(newContract);
+            
+            userData.hashRate += hash;
+            userData.dailyEarn += daily;
+            userData.activeMiners += 1;
+            userData.balance -= price;
+            
+            saveUserData();
+            updateDashboard();
+            renderActivePlans();
+            startAllCountdowns();
+            updatePlanButtons();
+            showToast(`🎉 تم تفعيل ${getPlanName(planKey)}!`);
+        }
+
+        // === إزالة باقة ===
+        function removePlan(planId) {
+            const plan = (userData.activePlans || []).find(p => p.id === planId);
+            if (!plan) return;
+            
+            if (!confirm(`هل تريد إلغاء عقد ${getPlanName(plan.name)}؟`)) return;
+            
+            if (countdownIntervals[planId]) {
+                clearInterval(countdownIntervals[planId]);
+                delete countdownIntervals[planId];
+            }
+            
+            userData.activePlans = userData.activePlans.filter(p => p.id !== planId);
+            userData.hashRate -= plan.hash;
+            userData.dailyEarn -= plan.daily;
+            userData.activeMiners -= 1;            
+            const txns = getTransactions();
+            txns.unshift({
+                id: 'CANCEL-' + planId,
+                type: 'cancel',
+                amount: 0,
+                currency: 'USD',
+                status: 'completed',
+                date: new Date().toLocaleString('ar-EG'),
+                icon: 'mining',
+                note: `إلغاء: ${getPlanName(plan.name)}`
+            });
+            saveTransactions(txns);
+            
+            saveUserData();
+            updateDashboard();
+            renderActivePlans();
+            startAllCountdowns();
+            updatePlanButtons();
+            renderTransactions();
+            showToast(`⚠️ تم إلغاء العقد`);
+        }
+
+        function calcWithdrawFee() {
+            const amount = parseFloat(document.getElementById('withdrawAmount')?.value) || 0;
+            const fee = amount * 0.02;
+            const net = amount - fee;
+            
+            const els = {
+                request: document.getElementById('withdrawRequest'),
+                fee: document.getElementById('withdrawFee'),
+                net: document.getElementById('withdrawNet')
+            };
+            
+            if (els.request) els.request.textContent = '$' + amount.toFixed(2);
+            if (els.fee) els.fee.textContent = '-$' + fee.toFixed(2);
+            if (els.net) els.net.textContent = '$' + net.toFixed(2);
+        }
+
+        function submitWithdraw() {
+            const amount = parseFloat(document.getElementById('withdrawAmount')?.value);
+            const currency = document.getElementById('withdrawCurrency')?.value || 'usdt';
+            const address = document.getElementById('withdrawAddress')?.value?.trim();
+            const fee = amount * 0.02;
+            const net = amount - fee;
+
+            if (!amount || amount < 10) { showToast('⚠️ الحد الأدنى $10', 'error'); return; }
+            if (amount > 10000) { showToast('⚠️ الحد الأقصى $10,000', 'error'); return; }
+            if (amount > userData.balance) { showToast('⚠️ رصيدك غير كافي!', 'error'); return; }
+            if (!address || address.length < 20) { showToast('⚠️ عنوان غير صحيح', 'error'); return; }
+            userData.balance -= amount;
+            saveUserData();
+            updateDashboard();
+            
+            const withdraw = {
+                id: 'WTH-' + Date.now(),
+                amount: amount,
+                fee: fee,
+                net: net,
+                currency: currency.toUpperCase(),
+                address: address,
+                status: 'pending',
+                date: new Date().toLocaleString('ar-EG')
+            };
+
+            const pending = getPendingWithdraws();
+            pending.unshift(withdraw);
+            savePendingWithdraws(pending);
+
+            const txns = getTransactions();
+            txns.unshift({
+                id: withdraw.id,
+                type: 'withdraw',
+                amount: -amount,
+                currency: currency.toUpperCase(),
+                status: 'pending',
+                date: withdraw.date,
+                icon: 'withdraw',
+                address: address
+            });
+            saveTransactions(txns);
+
+            showToast('📤 تم إرسال طلب السحب!');
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('withdrawAddress').value = '';
+            calcWithdrawFee();
+            
+            renderPendingWithdraws();
+            renderTransactions();
+            checkNotifications();
+        }
+
+        function renderPendingWithdraws() {
+            const container = document.getElementById('pendingWithdraws');
+            if (!container) return;
+            
+            const pending = getPendingWithdraws().filter(w => w.status === 'pending');
+            
+            if (pending.length === 0) {                container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>لا توجد طلبات</p></div>';
+                return;
+            }
+
+            container.innerHTML = pending.map(w => `
+                <div class="transaction-card" data-type="withdraw" data-id="${w.id}">
+                    <div class="transaction-info">
+                        <div class="transaction-icon withdraw"><i class="fas fa-arrow-up"></i></div>
+                        <div class="transaction-details">
+                            <h4>سحب ${w.currency}</h4>
+                            <p>${w.date}</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <span class="amount negative">-$${w.amount.toFixed(2)}</span>
+                        <span class="status-badge pending">⏳ معلق</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.querySelectorAll('.transaction-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    showRequestDetails(e.currentTarget.dataset.type, e.currentTarget.dataset.id);
+                });
+            });
+        }
+
+        function renderTransactions() {
+            const container = document.getElementById('transactionsList');
+            if (!container) return;
+            
+            const txns = getTransactions();
+            
+            if (txns.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>لا توجد معاملات</p></div>';
+                return;
+            }
+
+            container.innerHTML = txns.map(t => {
+                const isPositive = t.amount > 0;
+                const statusClass = t.status === 'verified' ? 'verified' : (t.status === 'rejected' ? 'rejected' : (t.status === 'processing' ? 'processing' : 'pending'));
+                const statusText = { pending: '✓ تم تاكيد طلبك', verified: '✓ مكتمل', rejected: '✗ مرفوض', processing: '🔄 جاري' }[t.status] || '✓ تم تاكيد طلبك';
+
+                return `
+                <div class="transaction-card" data-type="${t.type}" data-id="${t.id}">
+                    <div class="transaction-info">
+                        <div class="transaction-icon ${t.icon || 'mining'}">
+                            <i class="fas fa-${t.icon === 'deposit' ? 'arrow-down' : (t.icon === 'withdraw' ? 'arrow-up' : 'bolt')}"></i>
+                        </div>
+                        <div class="transaction-details">                            <h4>${t.type === 'deposit' ? 'إيداع' : (t.type === 'withdraw' ? 'سحب' : 'أخرى')}</h4>
+                            <p>${t.date}</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <span class="amount ${isPositive ? 'positive' : 'negative'}">${(isPositive ? '+' : '') + (t.amount !== 0 ? '$' + Math.abs(t.amount).toFixed(2) : '-')}</span>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            container.querySelectorAll('.transaction-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    showRequestDetails(e.currentTarget.dataset.type, e.currentTarget.dataset.id);
+                });
+            });
+        }
+
+        let currentRequest = null;
+        function showRequestDetails(type, id) {
+            const modal = document.getElementById('requestModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const actionBtn = document.getElementById('modalAction');
+            
+            if (!modal || !title || !body) return;
+            
+            if (type === 'deposit') {
+                const req = getPendingDeposits().find(d => d.id === id) || getTransactions().find(t => t.id === id);
+                if (!req) return;
+                currentRequest = { type: 'deposit', id: id };
+                title.textContent = 'تفاصيل الإيداع';
+                body.innerHTML = `<p><strong>المبلغ:</strong> $${req.amount.toFixed(2)}</p><p><strong>الحالة:</strong> ${req.status}</p>`;
+                if (actionBtn) actionBtn.style.display = 'none';
+            } else if (type === 'withdraw') {
+                const req = getPendingWithdraws().find(w => w.id === id) || getTransactions().find(t => t.id === id);
+                if (!req) return;
+                currentRequest = { type: 'withdraw', id: id };
+                title.textContent = 'تفاصيل السحب';
+                body.innerHTML = `<p><strong>المبلغ:</strong> $${req.amount.toFixed(2)}</p><p><strong>الحالة:</strong> ${req.status}</p>`;
+                if (actionBtn) {
+                    actionBtn.style.display = (req.status === 'pending') ? 'flex' : 'none';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('requestModal')?.classList.remove('show');            currentRequest = null;
+        }
+
+        function simulateApprove() {
+            if (!currentRequest || currentRequest.type !== 'withdraw') return;
+            
+            const pending = getPendingWithdraws();
+            const idx = pending.findIndex(w => w.id === currentRequest.id);
+            if (idx !== -1) {
+                pending[idx].status = 'verified';
+                savePendingWithdraws(pending);
+                showToast('✅ تمت الموافقة!');
+            }
+            
+            renderPendingWithdraws();
+            renderTransactions();
+            checkNotifications();
+            closeModal();
+        }
+
+        function checkNotifications() {
+            const pendingDep = getPendingDeposits().filter(d => d.status === 'pending' || d.status === 'processing').length;
+            const pendingWth = getPendingWithdraws().filter(w => w.status === 'pending').length;
+            const total = pendingDep + pendingWth;
+            
+            const badge = document.getElementById('notifBadge');
+            if (badge) {
+                badge.textContent = total;
+                badge.style.display = total > 0 ? 'block' : 'none';
+            }
+        }
+
+        function showNotifications() {
+            const pendingDep = getPendingDeposits().filter(d => d.status === 'pending' || d.status === 'processing').length;
+            const pendingWth = getPendingWithdraws().filter(w => w.status === 'pending').length;
+            if (pendingDep === 0 && pendingWth === 0) {
+                showToast('✅ لا توجد طلبات معلقة');
+                return;
+            }
+            
+            showToast(`📋 ${pendingDep} إيداع و ${pendingWth} سحب`, 'warning');
+        }
+
+        function initProgressAnimation() {
+            setInterval(() => {
+                const activePlans = userData.activePlans || [];
+                const now = Date.now();
+                
+                activePlans.forEach(plan => {
+                    if (plan.endDate > now && plan.startDate < now) {                        const totalDuration = plan.endDate - plan.startDate;
+                        const elapsed = now - plan.startDate;
+                        const progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                        
+                        const fillEl = document.getElementById(`progress-fill-${plan.id}`);
+                        const percentEl = document.getElementById(`progress-${plan.id}`);
+                        if (fillEl) fillEl.style.width = progress + '%';
+                        if (percentEl) percentEl.textContent = Math.floor(progress) + '%';
+                    }
+                });
+            }, 1000);
+        }
+
+        function toggleFaq(el) {
+            el.classList.toggle('active');
+            const answer = el.nextElementSibling;
+            if (answer) answer.classList.toggle('show');
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toastMsg');
+            if (!toast || !msgEl) return;
+            
+            msgEl.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // تحديث الرصيد كل دقيقة
+        setInterval(() => {
+            const activePlans = (userData.activePlans || []).filter(p => p.endDate > Date.now());
+            if (activePlans.length > 0) {
+                const totalDaily = activePlans.reduce((sum, p) => sum + p.daily, 0);
+                userData.balance += totalDaily / 1440;
+                saveUserData();
+                updateDashboard();
+            }
+        }, 60000);
+
+        // التحقق من العقود كل دقيقة
+        setInterval(() => { checkExpiredContracts(); }, 60000);
+
+        // الوضع الليلي
+        if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+</html>
